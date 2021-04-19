@@ -66,8 +66,10 @@ if __name__ == "__main__":
 
     # start writing the input file
     for num in range(1, args.num + 1):
+        print("Start create test instance ...")
+
+        # create new txt file
         with open(os.path.join(path, "test_{}.txt".format(num)), "w") as f:
-            print("Start create test instance ...")
 
             # write the size of the maze
             f.write("{} {}\n".format(args.size, args.size))
@@ -94,4 +96,4 @@ if __name__ == "__main__":
                     pos[1][1]
                 ))
 
-            print("End processing ...")
+        print("End processing ...")
