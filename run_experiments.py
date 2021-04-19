@@ -3,11 +3,13 @@ import argparse
 import glob
 from pathlib import Path
 from cbs import CBSSolver
+from cbs_normal import CBSSolver as CBSSolver_normal
 from visualize import Animation
 from SIPP import get_sum_of_cost
 import csv
 import signal
 from contextlib import contextmanager
+import os
 
 # learn setting time limit from https://stackoverflow.com/a/601168
 
@@ -105,7 +107,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    with open("results_size_{}.csv".format(args.size), mode="w") as result_file:
+    with open(os.path.join(os.getcwd(), "result/{}_results_size_{}.csv".format(args.solver, args.size)), mode="w") as result_file:
         csv_write = csv.writer(result_file)
         csv_write.writerow(['Instance', 'Node Expanded', 'CPU_time'])
 
@@ -124,10 +126,22 @@ if __name__ == '__main__':
                         time = cbs.CPU_time
                 except TimeoutException as e:
                     time = float("inf")
+            elif args.solver == "CBS_N":
+                print("**Run CBS With Normal A*")
+                try:
+                    with time_limit(300):
+                        cbs = CBSSolver_normal(my_map, starts, goals)
+                        paths = cbs.find_solution(args.disjoint)
+                        time = cbs.CPU_time
+                except TimeoutException as e:
+                    time = float("inf")
             else:
                 raise RuntimeError("Unknown solver!")
 
-            cost = get_sum_of_cost(paths)
+            if paths is not None:
+                cost = get_sum_of_cost(paths)
+            else:
+                cost = "None"
 
             csv_write.writerow([file, cost, "{:.2f}".format(time)])
 

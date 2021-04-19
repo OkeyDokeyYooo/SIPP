@@ -2,4 +2,3 @@
 __pycache__/
 .DS_Store
 instances_size_*/
-results_size_*.csv
