@@ -5,6 +5,7 @@ from pathlib import Path
 from cbs import CBSSolver
 from visualize import Animation
 from SIPP import get_sum_of_cost
+from independent import IndependentSolver
 
 SOLVER = "CBS"
 
@@ -93,6 +94,10 @@ if __name__ == '__main__':
             print("***Run CBS***")
             cbs = CBSSolver(my_map, starts, goals)
             paths = cbs.find_solution(args.disjoint)
+        elif args.solver == "Independent":
+            print("***Run Independent***")
+            solver = IndependentSolver(my_map, starts, goals)
+            paths = solver.find_solution()
         else:
             raise RuntimeError("Unknown solver!")
 
