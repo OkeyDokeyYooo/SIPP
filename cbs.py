@@ -17,7 +17,7 @@ def detect_collision(path1, path2):
 
     # deep copy of path1 and path2
     temp_path1, temp_path2 = [], []
-    for pos in path1: 
+    for pos in path1:
         temp_path1.append(pos)
     for pos in path2:
         temp_path2.append(pos)
@@ -30,13 +30,13 @@ def detect_collision(path1, path2):
             temp_path1.append(temp_path1[l1-1])
 
     for i in range(max_path):
-         # detect vertex collision
+        # detect vertex collision
         if get_location(temp_path1, i) == get_location(temp_path2, i):
             return [[get_location(temp_path1, i)], i]
 
-        # detect edge collisions     
+        # detect edge collisions
         if i < max_path-1:
-             if get_location(temp_path1, i) == get_location(temp_path2, i+1) and get_location(temp_path2, i) == get_location(temp_path1, i+1):
+            if get_location(temp_path1, i) == get_location(temp_path2, i+1) and get_location(temp_path2, i) == get_location(temp_path1, i+1):
                 return [[get_location(temp_path1, i), get_location(temp_path1, i+1)], i+1]
 
     # no collision between two paths
@@ -55,7 +55,7 @@ def detect_collisions(paths):
         for j in range(i+1, len(paths)):
             detect_result = detect_collision(paths[i], paths[j])
             if detect_result != None:
-                collision_table.append({'a1':i, 'a2':j, 'loc':detect_result[0], 'timestep':detect_result[1]})
+                collision_table.append({'a1': i, 'a2': j, 'loc': detect_result[0], 'timestep': detect_result[1]})
     return collision_table
 
 
@@ -68,21 +68,21 @@ def standard_splitting(collision):
     #           Edge collision: the first constraint prevents the first agent to traverse the specified edge at the
     #                          specified timestep, and the second constraint prevents the second agent to traverse the
     #                          specified edge at the specified timestep
-    
+
     # vertex collision:
     if len(collision['loc']) == 1:
-        first_constraint = {'agent':collision['a1'], 'loc':collision['loc'], 'timestep':collision['timestep'], 
-                            'positive':0}
-        second_constraint = {'agent':collision['a2'], 'loc':collision['loc'], 'timestep':collision['timestep'], 
-                             'positive':0}
+        first_constraint = {'agent': collision['a1'], 'loc': collision['loc'], 'timestep': collision['timestep'],
+                            'positive': 0}
+        second_constraint = {'agent': collision['a2'], 'loc': collision['loc'], 'timestep': collision['timestep'],
+                             'positive': 0}
         return [first_constraint, second_constraint]
 
     # edge collision:
     else:
-        first_constraint = {'agent':collision['a1'], 'loc':collision['loc'], 'timestep':collision['timestep'], 
-                            'positive':0}
-        second_constraint = {'agent':collision['a2'], 'loc':[collision['loc'][1], collision['loc'][0]], 
-                             'timestep':collision['timestep'], 'positive':0}
+        first_constraint = {'agent': collision['a1'], 'loc': collision['loc'], 'timestep': collision['timestep'],
+                            'positive': 0}
+        second_constraint = {'agent': collision['a2'], 'loc': [collision['loc'][1], collision['loc'][0]],
+                             'timestep': collision['timestep'], 'positive': 0}
         return [first_constraint, second_constraint]
 
 
@@ -99,36 +99,36 @@ def disjoint_splitting(collision):
 
     # Choose the agent randomly
     agent = ''
-    if random.randint(0,1) == 0:
+    if random.randint(0, 1) == 0:
         agent = 'a1'
     else:
         agent = 'a2'
 
     # vertex collision:
     if len(collision['loc']) == 1:
-        first_constraint = {'agent':collision[agent], 'loc':collision['loc'], 'timestep':collision['timestep'], 
-                            'positive':1}
-        second_constraint = {'agent':collision[agent], 'loc':collision['loc'], 'timestep':collision['timestep'], 
-                             'positive':0}
+        first_constraint = {'agent': collision[agent], 'loc': collision['loc'], 'timestep': collision['timestep'],
+                            'positive': 1}
+        second_constraint = {'agent': collision[agent], 'loc': collision['loc'], 'timestep': collision['timestep'],
+                             'positive': 0}
         return [first_constraint, second_constraint]
 
     # edge collision:
     else:
         if agent == 'a1':
-            first_constraint = {'agent':collision[agent], 'loc':collision['loc'], 'timestep':collision['timestep'], 
-                                'positive':1}
-            second_constraint = {'agent':collision[agent], 'loc':collision['loc'], 'timestep':collision['timestep'], 
-                                 'positive':0}
+            first_constraint = {'agent': collision[agent], 'loc': collision['loc'], 'timestep': collision['timestep'],
+                                'positive': 1}
+            second_constraint = {'agent': collision[agent], 'loc': collision['loc'], 'timestep': collision['timestep'],
+                                 'positive': 0}
             return [first_constraint, second_constraint]
         else:
-            first_constraint = {'agent':collision[agent], 'loc':[collision['loc'][1], collision['loc'][0]], 
-                                'timestep':collision['timestep'], 'positive':1}
-            second_constraint = {'agent':collision[agent], 'loc':[collision['loc'][1], collision['loc'][0]], 
-                                'timestep':collision['timestep'], 'positive':0}
+            first_constraint = {'agent': collision[agent], 'loc': [collision['loc'][1], collision['loc'][0]],
+                                'timestep': collision['timestep'], 'positive': 1}
+            second_constraint = {'agent': collision[agent], 'loc': [collision['loc'][1], collision['loc'][0]],
+                                 'timestep': collision['timestep'], 'positive': 0}
             return [first_constraint, second_constraint]
 
 
-# helper function: 
+# helper function:
 def paths_violate_constraint(constraint, paths):
     assert constraint['positive'] is 1
     rst = []
@@ -176,7 +176,6 @@ def eliminate_duplicates(path):
     return path
 
 
-
 class CBSSolver(object):
     """The high-level search of CBS."""
 
@@ -194,6 +193,7 @@ class CBSSolver(object):
         self.num_of_generated = 0
         self.num_of_expanded = 0
         self.CPU_time = 0
+        self.start_time = 0
 
         self.open_list = []
 
@@ -219,7 +219,7 @@ class CBSSolver(object):
         disjoint    - use disjoint splitting or not
         """
 
-        self.start_time = timer.time()
+        start_time = timer.time()
 
         root = {'cost': 0,
                 'constraints': [],
@@ -228,7 +228,7 @@ class CBSSolver(object):
 
         for i in range(self.num_of_agents):  # Find initial path for each agent
             path = a_star_safe_interval(self.my_map, self.starts[i], self.goals[i], self.heuristics[i],
-                          i, root['constraints'])
+                                        i, root['constraints'])
             if path is None:
                 raise BaseException('No solutions')
             root['paths'].append(path)
@@ -247,7 +247,7 @@ class CBSSolver(object):
         #           Ensure to create a copy of any objects that your child nodes might inherit
 
         while len(self.open_list) > 0:
-            curr = self.pop_node()     # firstly sorted with cost then sorted with #constraints 
+            curr = self.pop_node()     # firstly sorted with cost then sorted with #constraints
             # no collision return solution
             if len(curr['collisions']) == 0:
                 self.print_results(curr)
@@ -262,19 +262,19 @@ class CBSSolver(object):
             else:
                 constraints = disjoint_splitting(first_collision)
 
-            # for each constraint add a new child node 
+            # for each constraint add a new child node
             for constraint in constraints:
-                # deep copy parent attributes to child 
+                # deep copy parent attributes to child
                 child_constarints = copy_parent(curr['constraints'])
                 if constraint not in child_constarints:
                     child_constarints.append(constraint)
                 child_paths = copy_parent(curr['paths'])
                 constrainted_agent = constraint['agent']
-                child = {'cost':0, 'constraints':child_constarints, 'paths':child_paths, 'collisions':[]}
+                child = {'cost': 0, 'constraints': child_constarints, 'paths': child_paths, 'collisions': []}
 
                 if constraint['positive'] == 0:
-                    path = a_star_safe_interval(self.my_map, self.starts[constrainted_agent], self.goals[constrainted_agent], 
-                                  self.heuristics[constrainted_agent], constrainted_agent, child['constraints'])
+                    path = a_star_safe_interval(self.my_map, self.starts[constrainted_agent], self.goals[constrainted_agent],
+                                                self.heuristics[constrainted_agent], constrainted_agent, child['constraints'])
                     path = eliminate_duplicates(path)
                     if path is not None:
                         # replace the constrainted agent path by new path in parent paths
@@ -289,8 +289,8 @@ class CBSSolver(object):
 
                     # replace the constrainted agent path by new path in parent paths
                     for each_agent in violate_IDs:
-                        path = a_star_safe_interval(self.my_map, self.starts[each_agent], self.goals[each_agent], 
-                                      self.heuristics[each_agent], each_agent, child['constraints'])
+                        path = a_star_safe_interval(self.my_map, self.starts[each_agent], self.goals[each_agent],
+                                                    self.heuristics[each_agent], each_agent, child['constraints'])
                         path = eliminate_duplicates(path)
                         if path is not None:
                             child['paths'][each_agent] = path
@@ -298,9 +298,9 @@ class CBSSolver(object):
                             Add = False
                             break
 
-                    #update the constraint agent 
-                    path = a_star_safe_interval(self.my_map, self.starts[constrainted_agent], self.goals[constrainted_agent], 
-                                  self.heuristics[constrainted_agent], constrainted_agent, child['constraints'])
+                    # update the constraint agent
+                    path = a_star_safe_interval(self.my_map, self.starts[constrainted_agent], self.goals[constrainted_agent],
+                                                self.heuristics[constrainted_agent], constrainted_agent, child['constraints'])
                     path = eliminate_duplicates(path)
                     if path is not None:
                         child['paths'][constrainted_agent] = path
@@ -310,14 +310,13 @@ class CBSSolver(object):
                         Add = False
                     if Add:
                         self.push_node(child)
+            self.CPU_time = timer.time() - start_time
 
         raise BaseException('No solutions')
 
-
     def print_results(self, node):
         print("\n Found a solution! \n")
-        CPU_time = timer.time() - self.start_time
-        print("CPU time (s):    {:.2f}".format(CPU_time))
+        print("CPU time (s):    {:.2f}".format(self.CPU_time))
         print("Sum of costs:    {}".format(get_sum_of_cost(node['paths'])))
         print("Expanded nodes:  {}".format(self.num_of_expanded))
         print("Generated nodes: {}".format(self.num_of_generated))

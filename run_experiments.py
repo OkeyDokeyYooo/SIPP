@@ -5,6 +5,7 @@ from pathlib import Path
 from cbs import CBSSolver
 from visualize import Animation
 from SIPP import get_sum_of_cost
+import csv
 
 SOLVER = "CBS"
 
@@ -83,27 +84,29 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    result_file = open("results_size_{}.csv".format(args.size), "w+", buffering=1)
+    with open("results_size_{}.csv".format(args.size), mode="w+") as result_file:
+        csv_write = csv.writer(result_file)
+        csv_write.writerow(['Instance', 'Node Expanded', 'CPU_time'])
 
-    for file in sorted(glob.glob(args.instance)):
+        for file in sorted(glob.glob(args.instance)):
 
-        print("***Import an instance***")
-        my_map, starts, goals = import_mapf_instance(file)
-        print_mapf_instance(my_map, starts, goals)
+            print("***Import an instance***")
+            my_map, starts, goals = import_mapf_instance(file)
+            print_mapf_instance(my_map, starts, goals)
 
-        if args.solver == "CBS":
-            print("***Run CBS***")
-            cbs = CBSSolver(my_map, starts, goals)
-            paths = cbs.find_solution(args.disjoint)
-        else:
-            raise RuntimeError("Unknown solver!")
+            if args.solver == "CBS":
+                print("***Run CBS***")
+                cbs = CBSSolver(my_map, starts, goals)
+                paths = cbs.find_solution(args.disjoint)
+            else:
+                raise RuntimeError("Unknown solver!")
 
-        cost = get_sum_of_cost(paths)
-        result_file.write("{},{}\n".format(file, cost))
+            cost = get_sum_of_cost(paths)
 
-        if not args.batch:
-            print("***Test paths on a simulation***")
-            animation = Animation(my_map, starts, goals, paths)
-            # animation.save("output.mp4", 1.0)
-            animation.show()
-    result_file.close()
+            csv_write.writerow([file, cost, "{:.2f}".format(cbs.CPU_time)])
+
+            if not args.batch:
+                print("***Test paths on a simulation***")
+                animation = Animation(my_map, starts, goals, paths)
+                # animation.save("output.mp4", 1.0)
+                animation.show()
