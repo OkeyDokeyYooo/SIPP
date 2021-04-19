@@ -6,6 +6,27 @@ from cbs import CBSSolver
 from visualize import Animation
 from SIPP import get_sum_of_cost
 import csv
+import signal
+from contextlib import contextmanager
+
+# learn setting time limit from https://stackoverflow.com/a/601168
+
+
+class TimeoutException(Exception):
+    pass
+
+
+@contextmanager
+def time_limit(seconds):
+    def signal_handler(signum, frame):
+        raise TimeoutException("Timed out!")
+    signal.signal(signal.SIGALRM, signal_handler)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+
 
 SOLVER = "CBS"
 
@@ -84,7 +105,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    with open("results_size_{}.csv".format(args.size), mode="w+") as result_file:
+    with open("results_size_{}.csv".format(args.size), mode="w") as result_file:
         csv_write = csv.writer(result_file)
         csv_write.writerow(['Instance', 'Node Expanded', 'CPU_time'])
 
@@ -96,14 +117,19 @@ if __name__ == '__main__':
 
             if args.solver == "CBS":
                 print("***Run CBS***")
-                cbs = CBSSolver(my_map, starts, goals)
-                paths = cbs.find_solution(args.disjoint)
+                try:
+                    with time_limit(300):
+                        cbs = CBSSolver(my_map, starts, goals)
+                        paths = cbs.find_solution(args.disjoint)
+                        time = cbs.CPU_time
+                except TimeoutException as e:
+                    time = float("inf")
             else:
                 raise RuntimeError("Unknown solver!")
 
             cost = get_sum_of_cost(paths)
 
-            csv_write.writerow([file, cost, "{:.2f}".format(cbs.CPU_time)])
+            csv_write.writerow([file, cost, "{:.2f}".format(time)])
 
             if not args.batch:
                 print("***Test paths on a simulation***")

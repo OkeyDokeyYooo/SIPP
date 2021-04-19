@@ -219,7 +219,7 @@ class CBSSolver(object):
         disjoint    - use disjoint splitting or not
         """
 
-        start_time = timer.time()
+        self.start_time = timer.time()
 
         root = {'cost': 0,
                 'constraints': [],
@@ -310,11 +310,11 @@ class CBSSolver(object):
                         Add = False
                     if Add:
                         self.push_node(child)
-            self.CPU_time = timer.time() - start_time
 
         raise BaseException('No solutions')
 
     def print_results(self, node):
+        self.CPU_time = timer.time() - self.start_time
         print("\n Found a solution! \n")
         print("CPU time (s):    {:.2f}".format(self.CPU_time))
         print("Sum of costs:    {}".format(get_sum_of_cost(node['paths'])))
