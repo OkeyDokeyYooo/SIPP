@@ -3,6 +3,7 @@ import random
 import argparse
 from pathlib import Path
 from itertools import product
+from datetime import datetime
 
 ROAD = '.'
 WALL = '@'
@@ -56,17 +57,18 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    maze, left_coord = init_maze(args.size, args.size)
-
-    all_pos = generate_start_end_pos(left_coord, args.size)
-
     path = os.path.join(os.getcwd(), "instance_size_{}".format(args.size))
 
     Path(path).mkdir(parents=True, exist_ok=True)
 
+    print("Start create test instance ...")
     # start writing the input file
     for num in range(1, args.num + 1):
-        print("Start create test instance ...")
+
+        random.seed(datetime.now())
+        # creating a new map
+        maze, left_coord = init_maze(args.size, args.size)
+        all_pos = generate_start_end_pos(left_coord, args.size)
 
         # create new txt file
         with open(os.path.join(path, "test_{}.txt".format(num)), "w") as f:
@@ -96,4 +98,4 @@ if __name__ == "__main__":
                     pos[1][1]
                 ))
 
-        print("End processing ...")
+    print("End processing ...")
