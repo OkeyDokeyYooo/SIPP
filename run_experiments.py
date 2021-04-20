@@ -118,6 +118,7 @@ if __name__ == '__main__':
             my_map, starts, goals = import_mapf_instance(file)
             print_mapf_instance(my_map, starts, goals)
 
+            paths = None
             if args.solver == "CBS":
                 print("***Run CBS***")
                 try:
