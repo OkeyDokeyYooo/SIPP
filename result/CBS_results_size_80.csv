@@ -1,1 +1,4 @@
 Instance,Node Expanded,CPU_time
+instances_size_80/test_1.txt,None,inf
+instances_size_80/test_10.txt,3355,256.75730
+instances_size_80/test_11.txt,2494,55.68376
