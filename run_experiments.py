@@ -119,6 +119,8 @@ if __name__ == '__main__':
             print_mapf_instance(my_map, starts, goals)
 
             paths = None
+            expands_node = None
+            generate_node = None
             if args.solver == "CBS":
                 print("***Run CBS***")
                 try:
