@@ -10,6 +10,7 @@ import csv
 import signal
 from contextlib import contextmanager
 import os
+import time as timer
 
 # learn setting time limit from https://stackoverflow.com/a/601168
 
@@ -121,18 +122,20 @@ if __name__ == '__main__':
                 print("***Run CBS***")
                 try:
                     with time_limit(300):
+                        start_time = timer.time()
                         cbs = CBSSolver(my_map, starts, goals)
                         paths = cbs.find_solution(args.disjoint)
-                        time = cbs.CPU_time
+                        time = timer.time() - start_time
                 except TimeoutException as e:
                     time = float("inf")
             elif args.solver == "CBS_N":
                 print("**Run CBS With Normal A*")
                 try:
                     with time_limit(300):
+                        start_time = timer.time()
                         cbs = CBSSolver_normal(my_map, starts, goals)
                         paths = cbs.find_solution(args.disjoint)
-                        time = cbs.CPU_time
+                        time = timer.time() - start_time
                 except TimeoutException as e:
                     time = float("inf")
             else:
@@ -143,7 +146,7 @@ if __name__ == '__main__':
             else:
                 cost = "None"
 
-            csv_write.writerow([file, cost, "{:.2f}".format(time)])
+            csv_write.writerow([file, cost, "{:.5f}".format(time)])
 
             if not args.batch:
                 print("***Test paths on a simulation***")
