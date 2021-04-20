@@ -141,7 +141,7 @@ if __name__ == '__main__':
             else:
                 raise RuntimeError("Unknown solver!")
 
-            if paths is not None:
+            if paths != None:
                 cost = get_sum_of_cost(paths)
             else:
                 cost = "None"
