@@ -120,7 +120,7 @@ if __name__ == '__main__':
 
     create_file = None
     if file_name is not None:
-        create_file = "result/{}_results_size_{}_{}".format(args.solver, args.size, file_name)
+        create_file = "result/{}_results_size_{}_{}.csv".format(args.solver, args.size, file_name)
     else:
         crate_file = "result/{}_results_size_{}.csv".format(args.solver, args.size)
 
