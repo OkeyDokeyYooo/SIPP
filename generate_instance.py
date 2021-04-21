@@ -142,11 +142,11 @@ if __name__ == "__main__":
     elif args.agent == True:
         all_coord = list(product(range(args.size), range(args.size)))
 
-        num_walls = int(args.size * args.size * 0.15)
+        num_walls = int(args.size * args.size * 0.1)
         instance, left_coord = init_map(args.size, args.size, all_coord, num_walls)
 
         for num in range(1, args.num + 1):
-            num_agents = math.ceil(args.size * num * 0.03)
+            num_agents = math.ceil(args.size * num * 0.02)
 
             starts_pos, ends_pos, _ = generate_start_end_pos(left_coord, num_agents, should_remove=False)
 
