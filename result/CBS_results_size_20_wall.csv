@@ -3,7 +3,7 @@ Instance,Total Cost,CPU_time,Expanded nodes,Generated nodes
 20_instances_size_wall/test_10.txt,34,0.01714,2,3
 20_instances_size_wall/test_11.txt,32,0.01498,1,1
 20_instances_size_wall/test_12.txt,34,0.01589,2,3
-20_instances_size_wall/test_13.txt,40,0.01500,1,1
+20_instances_size_wall/test_13.txt,40,0.015,1,1
 20_instances_size_wall/test_14.txt,32,0.01519,1,1
 20_instances_size_wall/test_15.txt,34,0.01598,2,3
 20_instances_size_wall/test_16.txt,34,0.01452,1,1
@@ -25,8 +25,8 @@ Instance,Total Cost,CPU_time,Expanded nodes,Generated nodes
 20_instances_size_wall/test_30.txt,38,0.01114,1,1
 20_instances_size_wall/test_31.txt,40,0.01142,1,1
 20_instances_size_wall/test_32.txt,32,0.00978,1,1
-20_instances_size_wall/test_33.txt,54,0.01120,1,1
-20_instances_size_wall/test_34.txt,52,0.03230,8,15
+20_instances_size_wall/test_33.txt,54,0.0112,1,1
+20_instances_size_wall/test_34.txt,52,0.0323,8,15
 20_instances_size_wall/test_35.txt,36,0.01016,1,1
 20_instances_size_wall/test_36.txt,40,0.00973,1,1
 20_instances_size_wall/test_37.txt,68,0.00944,1,1
