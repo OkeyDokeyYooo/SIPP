@@ -105,10 +105,26 @@ if __name__ == '__main__':
                         help='The solver to use (one of: {CBS,Independent,Prioritized}), defaults to ' + str(SOLVER))
     parser.add_argument('--size', type=str, default=8,
                         help='The size of the map')
+    parser.add_argument('--wall', action='store_true', default=False, help="Only incease number of walls")
+    parser.add_argument('--agent', action='store_true', default=False, help="Only incease number of agents")
 
     args = parser.parse_args()
 
-    with open(os.path.join(os.getcwd(), "result/{}_results_size_{}.csv".format(args.solver, args.size)), mode="w") as result_file:
+    file_name = None
+    if args.wall == True:
+        assert args.agent == False
+        file_name = "wall"
+    if args.agent == True:
+        assert args.wall == False
+        file_name = "agent"
+
+    create_file = None
+    if file_name is not None:
+        create_file = "result/{}_results_size_{}_{}".format(args.solver, args.size, file_name)
+    else:
+        crate_file = "result/{}_results_size_{}.csv".format(args.solver, args.size)
+
+    with open(os.path.join(os.getcwd(), create_file), mode="w") as result_file:
         csv_write = csv.writer(result_file)
         csv_write.writerow(['Instance', 'Total Cost', 'CPU_time', 'Expanded nodes', 'Generated nodes'])
 
