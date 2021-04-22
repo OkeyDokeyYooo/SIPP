@@ -2,7 +2,7 @@ Instance,Total Cost,CPU_time,Expanded nodes,Generated nodes
 instances/test_1.txt,41,0.16959,145,289
 instances/test_10.txt,19,0.00668,4,7
 instances/test_11.txt,35,0.00808,3,5
-instances/test_12.txt,36,0.00950,6,11
+instances/test_12.txt,36,0.0095,6,11
 instances/test_13.txt,36,0.01443,9,17
 instances/test_14.txt,24,0.00492,2,3
 instances/test_15.txt,50,0.02454,12,23
@@ -15,7 +15,7 @@ instances/test_20.txt,28,0.00528,2,3
 instances/test_21.txt,46,0.00948,4,7
 instances/test_22.txt,51,0.01521,8,15
 instances/test_23.txt,32,0.00648,2,3
-instances/test_24.txt,47,0.02530,17,33
+instances/test_24.txt,47,0.0253,17,33
 instances/test_26.txt,42,0.01052,5,9
 instances/test_27.txt,40,0.01074,6,11
 instances/test_28.txt,41,0.01429,8,15
@@ -42,7 +42,7 @@ instances/test_46.txt,57,0.05058,29,57
 instances/test_47.txt,None,inf,29,57
 instances/test_48.txt,36,1.19155,5,9
 instances/test_49.txt,42,0.00969,7,13
-instances/test_5.txt,26,0.00740,6,11
+instances/test_5.txt,26,0.0074,6,11
 instances/test_50.txt,48,0.03711,12,23
 instances/test_6.txt,24,0.00503,3,5
 instances/test_7.txt,34,0.00476,2,3
